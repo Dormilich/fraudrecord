@@ -81,16 +81,11 @@ class WebService
 
         sscanf($response, '<report>%d-%d-%f-%s</report>', $value, $count, $reliability, $code);
 
-        if ($value === NULL) {
-            throw new ResponseException($response);
+        if ($value !== NULL) {
+            return new QueryResult($value, $count, $reliability, $code);
         }
 
-        return [
-            'value' => $value,
-            'count' => $count,
-            'reliability' => $reliability,
-            'code' => $code,
-        ];
+        throw new ResponseException($response);
     }
 
     /**
