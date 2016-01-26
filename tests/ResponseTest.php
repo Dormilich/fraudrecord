@@ -3,6 +3,12 @@
 use Dormilich\WebService\FraudRecord\WebService;
 use Test\MockClient;
 
+/*
+    Since PHPUnit cannot stub an interface, I can as well use a mock 
+    implementation that I can use as spy for inspecting the data that are 
+    passed to the client implementation.
+ */
+
 class ResponseTest extends PHPUnit_Framework_TestCase
 {
     public function testSuccessfulReportReturnsReportCode()
@@ -80,5 +86,5 @@ class ResponseTest extends PHPUnit_Framework_TestCase
         $api->query([]);
     }
 
-    // there is no documented error for the delete action
+    // there is no documented response for the delete action
 }
