@@ -91,3 +91,23 @@ The Report Code returned from a report or found in the result for a query.
 #### Return Value
 
 This method does not return anything.
+
+
+
+```php
+boolean public function WebService::enableIconv ( [ boolean $bool = true ] )
+```
+
+Enable/disable text conversion via transliteration to ASCII. If the `iconv()` function is not available, this setting 
+will always be `false` and cannot be changed. By default the setting is set to `true`. 
+
+If you only have text using ASCII characters, you should set the conversion to `false`.
+
+#### Arguments
+
+**bool**<br>
+A boolean indicating whether text conversion should be done.
+
+#### Return Value
+
+Returns the setting of the text conversion.
