@@ -66,4 +66,43 @@ class EncodeTest extends PHPUnit_Framework_TestCase
         // hash of "example.com"
         $this->assertSame('ff07748b4d4b8f08f21499e078ef792fded46641', $params['myspace']);
     }
+
+    /**
+     * @requires function iconv
+     */
+    public function testDataValuesAreConvertedToAscii()
+    {
+        $client = new MockClient('OK:GO');
+        $api = new WebService($client, '12345');
+
+        $api->report([
+            'name' => 'François Duprée', 
+        ]);
+        parse_str($client->body, $params);
+
+        $this->assertArrayHasKey('name', $params);
+        // hash of "francoisdupr'ee"
+        $this->assertSame('bf2f4c54e91f5b7f83b67bc52ef7c123cc0b5a37', $params['name']);
+    }
+
+    /**
+     * @requires function iconv
+     */
+    public function testSkipAsciiConversion()
+    {
+        $client = new MockClient('OK:GO');
+        $api = new WebService($client, '12345');
+
+        $api->enableIconv(false);
+        $api->report([
+            'name' => 'Søren Übermaß', 
+        ]);
+        parse_str($client->body, $params);
+
+        $this->assertArrayHasKey('name', $params);
+        // handling of non-ASCII characters may differ among systems so I 
+        // cannot guarantee that the intended "correct" hash is the same for 
+        // all systems 
+        $this->assertNotEquals('bf2f4c54e91f5b7f83b67bc52ef7c123cc0b5a37', $params['name']);
+    }
 }
