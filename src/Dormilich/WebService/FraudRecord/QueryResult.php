@@ -19,7 +19,7 @@ class QueryResult implements \ArrayAccess
     /**
      * Key to retrieve further report details.
      */
-    protected $code = '';
+    protected $code = false;
 
     /**
      * Set the result properties.
@@ -105,6 +105,6 @@ class QueryResult implements \ArrayAccess
      */
     public function __toString()
     {
-        return $this->code;
+        return (string) $this->code;
     }
 }
