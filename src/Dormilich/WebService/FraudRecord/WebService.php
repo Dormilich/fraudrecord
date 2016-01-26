@@ -25,8 +25,9 @@ class WebService
      */
     public function __construct(ClientAdapter $client, $apiKey)
     {
-        $this->client['_api'] = (string) $apiKey;
+        $this->client = $client;
         $this->client->setBaseUri(self::HOST);
+        $this->config['_api'] = (string) $apiKey;
         $this->iconv = function_exists('iconv');
     }
 
@@ -79,7 +80,11 @@ class WebService
     {
         $response = $this->submit('query', $fields);
 
-        sscanf($response, '<report>%d-%d-%f-%s</report>', $value, $count, $reliability, $code);
+        // @see http://php.net/manual/en/function.sscanf.php#56076
+        // sscanf() seems to ignore text that is supposed to be after the last identifier
+        // in this case using "%s</report>" as format resulted in e.g. "abc</report>" for 
+        // that variable, so a stop-character is needed
+        sscanf($response, '<report>%d-%d-%f-%[^<]', $value, $count, $reliability, $code);
 
         if ($value !== NULL) {
             return new QueryResult($value, $count, $reliability, $code);
