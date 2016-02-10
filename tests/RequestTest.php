@@ -44,7 +44,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertSame('a51ff508c331b7e9', $params['_api']);
     }
 
-    public function testQueryIsPassedNexessaryVariables()
+    public function testQueryIsPassedNecessaryVariables()
     {
         $client = new MockClient('<report>14-3-6.7-abd2ce90ea864c03</report>');
         $api = new WebService($client, 'a51ff508c331b7e9');
@@ -71,7 +71,7 @@ class RequestTest extends PHPUnit_Framework_TestCase
         $this->assertSame('a51ff508c331b7e9', $params['_api']);
     }
 
-    public function testDeleteIsPassedNexessaryVariables()
+    public function testDeleteIsPassedNecessaryVariables()
     {
         $client = new MockClient('');
         $api = new WebService($client, 'a51ff508c331b7e9');
