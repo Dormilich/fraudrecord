@@ -80,9 +80,8 @@ class WebService
         $response = $this->submit('query', $fields);
 
         // @see http://php.net/manual/en/function.sscanf.php#56076
-        // sscanf() seems to ignore text that is supposed to be after the last identifier
-        // in this case using "%s</report>" as format resulted in e.g. "abc</report>" for 
-        // that variable, so a stop-character is needed
+        // @see https://bugs.php.net/bug.php?id=71453
+        // string placeholders are greedy ...
         sscanf($response, '<report>%d-%d-%f-%[^<]', $value, $count, $reliability, $code);
 
         if ($value !== NULL) {

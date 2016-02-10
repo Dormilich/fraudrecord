@@ -86,9 +86,6 @@ class EncodeTest extends PHPUnit_Framework_TestCase
         $this->assertSame('bf2f4c54e91f5b7f83b67bc52ef7c123cc0b5a37', $params['name']);
     }
 
-    /**
-     * @requires function iconv
-     */
     public function testSkipAsciiConversion()
     {
         $client = new MockClient('OK:GO');
@@ -104,5 +101,36 @@ class EncodeTest extends PHPUnit_Framework_TestCase
         // cannot guarantee that the intended "correct" hash is the same for 
         // all systems 
         $this->assertNotEquals('bf2f4c54e91f5b7f83b67bc52ef7c123cc0b5a37', $params['name']);
+    }
+
+    public function testQueryEncodesSameAsReport()
+    {
+        $client = new MockClient('<report>14-3-6.7-cf2b27b5556c2ddc</report>');
+        $api = new WebService($client, '12345');
+
+        $report = $api->query([
+            '_type'    => 'fraud',
+            'password' => 'iLoveLinux!',
+            'name'     => 'John Smith', 
+            'phone'    => '+1 000 111 22 33 ',
+            'myspace'  => 'http://www.example.com/fraudrecord',
+        ]);
+
+        parse_str($client->body, $params);
+
+        $this->assertArrayHasKey('_type', $params);
+        $this->assertSame('fraud', $params['_type']);
+
+        $this->assertArrayHasKey('password', $params);
+        $this->assertSame('93491c2dff7b35528c319f304b0222fc55ebcfcb', $params['password']);
+
+        $this->assertArrayHasKey('name', $params);
+        $this->assertSame('ac2c739924bf5d4d9bf5875dc70274fef0fe54cf', $params['name']);
+
+        $this->assertArrayHasKey('phone', $params);
+        $this->assertSame('3f09086d8d4e4019eb534ce28e6b64c8ef563ec9', $params['phone']);
+
+        $this->assertArrayHasKey('myspace', $params);
+        $this->assertSame('ff07748b4d4b8f08f21499e078ef792fded46641', $params['myspace']);
     }
 }
