@@ -10,7 +10,7 @@ class WebService
 {
     const HOST = 'https://www.fraudrecord.com/api/';
 
-    protected $iconv = true;
+    protected $iconv = false;
 
     protected $config = [];
 
@@ -28,7 +28,6 @@ class WebService
         $this->client = $client;
         $this->client->setBaseUri(self::HOST);
         $this->config['_api'] = (string) $apiKey;
-        $this->iconv = function_exists('iconv');
     }
 
     /**

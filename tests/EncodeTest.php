@@ -75,6 +75,7 @@ class EncodeTest extends PHPUnit_Framework_TestCase
         $client = new MockClient('OK:GO');
         $api = new WebService($client, '12345');
 
+        $api->enableIconv(true);
         $api->report([
             'name' => 'François Duprée', 
         ]);
@@ -93,7 +94,6 @@ class EncodeTest extends PHPUnit_Framework_TestCase
         $client = new MockClient('OK:GO');
         $api = new WebService($client, '12345');
 
-        $api->enableIconv(false);
         $api->report([
             'name' => 'Søren Übermaß', 
         ]);
